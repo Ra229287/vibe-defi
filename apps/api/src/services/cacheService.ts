@@ -12,21 +12,16 @@ function getRedis(): Redis | null {
     return null;
   }
 
-  try {
-    redis = new Redis(redisUrl, {
-      maxRetriesPerRequest: 3,
-      retryStrategy: () => 100,
-    });
+  redis = new Redis(redisUrl, {
+    maxRetriesPerRequest: 3,
+    retryStrategy: () => 100,
+  });
 
-    redis.on('error', (err) => {
-      logger.error('Redis error:', err);
-    });
+  redis.on('error', (err) => {
+    logger.error('Redis error:', err);
+  });
 
-    return redis;
-  } catch {
-    logger.warn('Failed to connect to Redis, caching disabled');
-    return null;
-  }
+  return redis;
 }
 
 export const cacheService = {
